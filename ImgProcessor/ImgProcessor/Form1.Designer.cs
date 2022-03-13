@@ -44,9 +44,11 @@ namespace ImgProcessor
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
+            this.Plot = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.OriginalImage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.EditedImage)).BeginInit();
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Plot)).BeginInit();
             this.SuspendLayout();
             // 
             // OriginalImage
@@ -91,7 +93,7 @@ namespace ImgProcessor
             // 
             // Revert
             // 
-            this.Revert.Location = new System.Drawing.Point(751, 53);
+            this.Revert.Location = new System.Drawing.Point(750, 53);
             this.Revert.Name = "Revert";
             this.Revert.Size = new System.Drawing.Size(75, 23);
             this.Revert.TabIndex = 3;
@@ -101,7 +103,7 @@ namespace ImgProcessor
             // 
             // Inversion
             // 
-            this.Inversion.Location = new System.Drawing.Point(751, 98);
+            this.Inversion.Location = new System.Drawing.Point(743, 109);
             this.Inversion.Name = "Inversion";
             this.Inversion.Size = new System.Drawing.Size(75, 26);
             this.Inversion.TabIndex = 4;
@@ -121,7 +123,7 @@ namespace ImgProcessor
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(741, 184);
+            this.button4.Location = new System.Drawing.Point(747, 173);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(83, 29);
             this.button4.TabIndex = 6;
@@ -131,7 +133,7 @@ namespace ImgProcessor
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(746, 234);
+            this.button5.Location = new System.Drawing.Point(751, 211);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(79, 26);
             this.button5.TabIndex = 7;
@@ -141,7 +143,7 @@ namespace ImgProcessor
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(743, 275);
+            this.button6.Location = new System.Drawing.Point(861, 206);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(93, 31);
             this.button6.TabIndex = 8;
@@ -151,7 +153,7 @@ namespace ImgProcessor
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(746, 322);
+            this.button7.Location = new System.Drawing.Point(750, 243);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(89, 30);
             this.button7.TabIndex = 9;
@@ -161,7 +163,7 @@ namespace ImgProcessor
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(746, 379);
+            this.button1.Location = new System.Drawing.Point(846, 53);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(108, 50);
             this.button1.TabIndex = 10;
@@ -171,7 +173,7 @@ namespace ImgProcessor
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(746, 438);
+            this.button2.Location = new System.Drawing.Point(847, 109);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(107, 36);
             this.button2.TabIndex = 11;
@@ -181,7 +183,7 @@ namespace ImgProcessor
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(744, 485);
+            this.button8.Location = new System.Drawing.Point(846, 151);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(109, 32);
             this.button8.TabIndex = 12;
@@ -189,11 +191,20 @@ namespace ImgProcessor
             this.button8.UseVisualStyleBackColor = true;
             this.button8.Click += new System.EventHandler(this.EmbossImage);
             // 
+            // Plot
+            // 
+            this.Plot.Location = new System.Drawing.Point(740, 317);
+            this.Plot.Name = "Plot";
+            this.Plot.Size = new System.Drawing.Size(255, 255);
+            this.Plot.TabIndex = 13;
+            this.Plot.TabStop = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1106, 631);
+            this.Controls.Add(this.Plot);
             this.Controls.Add(this.button8);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
@@ -214,6 +225,7 @@ namespace ImgProcessor
             ((System.ComponentModel.ISupportInitialize)(this.EditedImage)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Plot)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -236,6 +248,7 @@ namespace ImgProcessor
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.PictureBox Plot;
     }
 }
 

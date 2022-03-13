@@ -15,14 +15,25 @@ namespace ImgProcessor
         public int brightness_coeff = 30;
         public float gamma = 1.2f;
         public float contrast_coeff = 1.2f;
+
+        public int[] plot = new int[256];
         public Form1()
         {
+            for (int i = 0; i < 256; i++)
+                plot[i] = 255-i;
             InitializeComponent();
+            
         }
 
         private void LoadImage(object sender, EventArgs e)
         {
             OpenFileDialog op = new OpenFileDialog();
+            Bitmap bmp = new Bitmap(256, 256);
+            for (int i = 0; i < 256; ++i)
+                for (int j = 0; j < 256; ++j)
+                    bmp.SetPixel(i, j, Color.White);
+                    
+            changePlot(bmp);
             op.Title = "Select a picture";
             op.Filter = "All supported graphics|*.jpg;*.jpeg;*.png|" +
               "JPEG (*.jpg;*.jpeg)|*.jpg;*.jpeg|" +
@@ -31,9 +42,18 @@ namespace ImgProcessor
             if (op.ShowDialog() == DialogResult.OK)
             {
                 OriginalImage.Image = System.Drawing.Image.FromFile(op.FileName);
+                OriginalImage.SizeMode = PictureBoxSizeMode.StretchImage;
                 EditedImage.Image = System.Drawing.Image.FromFile(op.FileName);
-    
+                EditedImage.SizeMode = PictureBoxSizeMode.StretchImage;
+
+                Plot.Image = bmp;
             }
+        }
+
+        public void changePlot(Bitmap bmp)
+        {
+            for (int i = 0; i < 256; i++)
+                bmp.SetPixel(i, plot[i], Color.Black);
         }
 
         private void RevertImage(object sender, EventArgs e)
