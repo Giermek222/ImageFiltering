@@ -13,14 +13,15 @@ namespace ImgProcessor
     public partial class Form1 : Form
     {
         public int brightness_coeff = 30;
-        public float gamma = 1.2f;
+        public float gamma = 1.5f;
         public float contrast_coeff = 1.2f;
 
         public int[] plot = new int[256];
+        Bitmap plot_bmp = new Bitmap(256, 256);
         public Form1()
         {
             for (int i = 0; i < 256; i++)
-                plot[i] = 255-i;
+                plot[i] = i;
             InitializeComponent();
             
         }
@@ -28,12 +29,9 @@ namespace ImgProcessor
         private void LoadImage(object sender, EventArgs e)
         {
             OpenFileDialog op = new OpenFileDialog();
-            Bitmap bmp = new Bitmap(256, 256);
-            for (int i = 0; i < 256; ++i)
-                for (int j = 0; j < 256; ++j)
-                    bmp.SetPixel(i, j, Color.White);
-                    
-            changePlot(bmp);
+
+
+            UpdatePlot();
             op.Title = "Select a picture";
             op.Filter = "All supported graphics|*.jpg;*.jpeg;*.png|" +
               "JPEG (*.jpg;*.jpeg)|*.jpg;*.jpeg|" +
@@ -46,19 +44,29 @@ namespace ImgProcessor
                 EditedImage.Image = System.Drawing.Image.FromFile(op.FileName);
                 EditedImage.SizeMode = PictureBoxSizeMode.StretchImage;
 
-                Plot.Image = bmp;
+                Plot.Image = plot_bmp;
             }
         }
 
-        public void changePlot(Bitmap bmp)
+        public void UpdatePlot()
         {
-            for (int i = 0; i < 256; i++)
-                bmp.SetPixel(i, plot[i], Color.Black);
+            for (int i = 0; i < 256; ++i)
+                for (int j = 0; j < 256; ++j)
+                {
+                    if (plot[i] == 255 - j)
+                        plot_bmp.SetPixel(i, 255 - plot[i], Color.Black);
+                    else
+                        plot_bmp.SetPixel(i, j, Color.White);
+                }
         }
 
         private void RevertImage(object sender, EventArgs e)
         {
             EditedImage.Image = OriginalImage.Image;
+            for (int i = 0; i < 256; ++i)
+                plot[i] = 255 - i;
+            UpdatePlot();
+            Plot.Image = plot_bmp;
         }
 
         private void InvertImage(object sender, EventArgs e)
@@ -67,9 +75,14 @@ namespace ImgProcessor
             for (int i = 0; i < bmp.Width; i++)
                 for (int j = 0; j < bmp.Height; j++)
                 {
-                    Color pixel = bmp.GetPixel(i, j); 
+                    Color pixel = bmp.GetPixel(i, j);
+                    
                     bmp.SetPixel(i, j, Color.FromArgb(pixel.A , 255 - pixel.R, 255 - pixel.G, 255 - pixel.B));
                 }
+            for (int i = 0; i < 256; ++i)
+                plot[i] = 255 - plot[i];
+            UpdatePlot();
+            Plot.Image = plot_bmp;
             EditedImage.Image = bmp;
         }
 
@@ -99,6 +112,15 @@ namespace ImgProcessor
                     }
                     bmp.SetPixel(i, j, Color.FromArgb(pixel.A, red, green, blue));
                 }
+            for (int i = 0; i < 256; ++i) { 
+                if (brightness_coeff > 0)
+                    plot[i] = plot[i] + brightness_coeff < 255 ? plot[i] + brightness_coeff : 255;
+                else
+                    plot[i] = plot[i] + brightness_coeff > 0 ? plot[i] + brightness_coeff : 0;
+            }
+
+            UpdatePlot();
+            Plot.Image = plot_bmp;
             EditedImage.Image = bmp;
         }
 
@@ -110,12 +132,21 @@ namespace ImgProcessor
                 {
 
                     Color pixel = bmp.GetPixel(i, j);
-                    int red = (int)Math.Pow(pixel.R, gamma) < 255 ? (int)Math.Pow(pixel.R, gamma) : 255 ;
-                    int green = (int)Math.Pow(pixel.G, gamma) < 255 ? (int)Math.Pow(pixel.G, gamma) : 255;
-                    int blue = (int)Math.Pow(pixel.B, gamma) < 255 ? (int)Math.Pow(pixel.B, gamma) : 255;
+                    int red = (int)(Math.Pow((double)pixel.R / (double)255, gamma) * 255);
+                    int green = (int)(Math.Pow((double)pixel.G / (double)255, gamma) * 255);
+                    int blue = (int)(Math.Pow((double)pixel.B / (double)255, gamma) * 255);
 
                     bmp.SetPixel(i, j, Color.FromArgb(pixel.A, red, green, blue));
                 }
+            
+            for (int i = 0; i < 256; ++i)
+            {
+                
+                plot[i] = (int)(Math.Pow((double)plot[i] / (double)255, gamma) * 255);
+            }
+
+            UpdatePlot();
+            Plot.Image = plot_bmp;
             EditedImage.Image = bmp;
         }
 

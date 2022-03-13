@@ -195,7 +195,7 @@ namespace ImgProcessor
             // 
             this.Plot.Location = new System.Drawing.Point(740, 317);
             this.Plot.Name = "Plot";
-            this.Plot.Size = new System.Drawing.Size(255, 255);
+            this.Plot.Size = new System.Drawing.Size(256, 256);
             this.Plot.TabIndex = 13;
             this.Plot.TabStop = false;
             // 
