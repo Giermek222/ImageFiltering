@@ -18,6 +18,7 @@ namespace ImgProcessor
 
         public int[] plot = new int[256];
         Bitmap plot_bmp = new Bitmap(256, 256);
+        public List<Point> plot_points = new List<Point>() { new Point(0,0), new Point(255,255) };
         public Form1()
         {
             for (int i = 0; i < 256; i++)
@@ -53,7 +54,11 @@ namespace ImgProcessor
             for (int i = 0; i < 256; ++i)
                 for (int j = 0; j < 256; ++j)
                 {
-                    if (plot[i] == 255 - j)
+                    
+                    
+                    if (plot_points.Contains(new Point(i, 255-j)))
+                        plot_bmp.SetPixel(i, 255 - plot[i], Color.Red);
+                    else if (plot[i] == 255 - j)
                         plot_bmp.SetPixel(i, 255 - plot[i], Color.Black);
                     else
                         plot_bmp.SetPixel(i, j, Color.White);
@@ -64,7 +69,8 @@ namespace ImgProcessor
         {
             EditedImage.Image = OriginalImage.Image;
             for (int i = 0; i < 256; ++i)
-                plot[i] = 255 - i;
+                plot[i] =  i;
+            plot_points = new List<Point>() { new Point(0, 0), new Point(255, 255) };
             UpdatePlot();
             Plot.Image = plot_bmp;
         }
@@ -81,6 +87,12 @@ namespace ImgProcessor
                 }
             for (int i = 0; i < 256; ++i)
                 plot[i] = 255 - plot[i];
+            List<Point> newList = new List<Point>();
+            for (int i = 0; i < plot_points.Count; i++)
+            {
+                newList.Add(new Point(plot_points[i].X, 255 -plot_points[i].Y ));
+            }
+            plot_points = newList;
             UpdatePlot();
             Plot.Image = plot_bmp;
             EditedImage.Image = bmp;
@@ -118,6 +130,16 @@ namespace ImgProcessor
                 else
                     plot[i] = plot[i] + brightness_coeff > 0 ? plot[i] + brightness_coeff : 0;
             }
+            List<Point> newList = new List<Point>();
+            for (int i = 0; i < plot_points.Count; i++)
+            {
+                if (brightness_coeff > 0)
+                    newList.Add(new Point(plot_points[i].X, plot_points[i].Y + brightness_coeff < 255 ? plot_points[i].Y + brightness_coeff : 255));
+                else
+                    newList.Add(new Point(plot_points[i].X, plot_points[i].Y + brightness_coeff > 0 ? plot_points[i].Y + brightness_coeff : 0));
+
+            }
+            plot_points = newList;
 
             UpdatePlot();
             Plot.Image = plot_bmp;
@@ -144,7 +166,12 @@ namespace ImgProcessor
                 
                 plot[i] = (int)(Math.Pow((double)plot[i] / (double)255, gamma) * 255);
             }
-
+            List<Point> newList = new List<Point>();
+            for (int i = 0; i < plot_points.Count; i++)
+            {
+                newList.Add(new Point(plot_points[i].X, (int)(Math.Pow((double)plot_points[i].Y / (double)255, gamma) * 255)));
+            }
+            plot_points = newList;
             UpdatePlot();
             Plot.Image = plot_bmp;
             EditedImage.Image = bmp;
@@ -166,6 +193,14 @@ namespace ImgProcessor
                     blue = blue > 0 ? blue : 0;
                     bmp.SetPixel(i, j, Color.FromArgb(pixel.A, red, green, blue));
                 }
+            for (int i = 0; i < 256; ++i)
+            {
+
+                plot[i] = (plot[i] - 128) * contrast_coeff + 128 < 255 ? (int)((plot[i] - 128) * contrast_coeff + 128) < 0 ? 0 : (int)((plot[i] - 128) * contrast_coeff + 128) : 255;
+            }
+
+            UpdatePlot();
+            Plot.Image = plot_bmp;
             EditedImage.Image = bmp;
         }
 
@@ -295,6 +330,69 @@ namespace ImgProcessor
                                    green / divisor > 255 ? 255 : green / divisor,
                                    blue / divisor > 255 ? 255 : blue / divisor);
 
+        }
+
+        private void ClickPlot(object sender, EventArgs e)
+        {
+            MouseEventArgs m = e as MouseEventArgs;
+            //We clicked on existing point and we want it gone
+            if (plot_points.Contains(new Point(m.X, 255 - m.Y)))
+            {
+                //you cannot delete start and end point
+                if (m.X == 255 || m.X == 0)
+                    return;
+                else
+                    plot_points.Remove(new Point(m.X, 255 - m.Y));
+
+            }
+            //there can only be one point for each value so hitting
+            //occupied spot moves point
+            else if (plot_points.Where(p => p.X == m.X).Count() != 0)
+            {
+                plot_points.Remove(plot_points.Where(p => p.X == m.X).ElementAt(0));
+                plot_points.Add(new Point(m.X, 255 - m.Y));
+            } 
+            //adding new point
+            else
+            {
+                plot_points.Add(new Point(m.X, 255 - m.Y));
+            }
+            plot_points.Sort(( n,  m) =>  n.X.CompareTo(m.X));
+            AdjustAfterNewPoint();
+            UpdatePlot();
+            PictureAfterNewPoint();
+            
+            Plot.Image = plot_bmp;
+
+        }
+
+        private void AdjustAfterNewPoint()
+        {
+            for (int i = 0; i < plot_points.Count - 1; ++i)
+            {
+                double a = ((double)( plot_points[i + 1].Y - plot_points[i].Y) / (double)(plot_points[i+1].X - plot_points[i].X));
+                double b =  plot_points[i].Y - plot_points[i].X * a;
+                for (int j = plot_points[i].X; j <= plot_points[i + 1].X; ++j)
+                {
+                    plot[j] = (int)(a * j + b);
+                }
+            }
+        }
+
+        private void PictureAfterNewPoint()
+        {
+            Bitmap plot_bmp = new Bitmap(OriginalImage.Image);
+            for (int i = 0; i < plot_bmp.Width; i++)
+                for (int j = 0; j < plot_bmp.Height; j++)
+                {
+                    Color pixel = plot_bmp.GetPixel(i, j);
+                    int red = plot[pixel.R];
+                    int green = plot[pixel.G];
+                    int blue = plot[pixel.B];
+
+                    plot_bmp.SetPixel(i, j, Color.FromArgb(pixel.A, red, green, blue));
+                }
+            EditedImage.Image = plot_bmp;
         }
     }
 }

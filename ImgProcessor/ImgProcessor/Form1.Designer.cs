@@ -198,6 +198,7 @@ namespace ImgProcessor
             this.Plot.Size = new System.Drawing.Size(256, 256);
             this.Plot.TabIndex = 13;
             this.Plot.TabStop = false;
+            this.Plot.Click += new System.EventHandler(this.ClickPlot);
             // 
             // Form1
             // 
