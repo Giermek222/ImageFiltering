@@ -16,6 +16,7 @@ namespace ImgProcessor
         public int brightness_coeff = 30;
         public float gamma = 1.5f;
         public float contrast_coeff = 1.2f;
+        
 
         public int[] plot = new int[256];
         Bitmap plot_bmp = new Bitmap(256, 256);
@@ -46,9 +47,9 @@ namespace ImgProcessor
             if (op.ShowDialog() == DialogResult.OK)
             {
                 OriginalImage.Image = System.Drawing.Image.FromFile(op.FileName);
-                OriginalImage.SizeMode = PictureBoxSizeMode.StretchImage;
+                //OriginalImage.SizeMode = PictureBoxSizeMode.StretchImage;
                 EditedImage.Image = System.Drawing.Image.FromFile(op.FileName);
-                EditedImage.SizeMode = PictureBoxSizeMode.StretchImage;
+                //EditedImage.SizeMode = PictureBoxSizeMode.StretchImage;
 
                 Plot.Image = plot_bmp;
             }
@@ -213,12 +214,12 @@ namespace ImgProcessor
         {
             Bitmap bmp = new Bitmap(EditedImage.Image);
             Bitmap original = new Bitmap(EditedImage.Image);
-            int[] filter = { 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+            int[] filter = { 1, 1, 1, 1, 1, 1, 1, 1, 1 ,1,1,1,1,1,1,1};
             for (int i = 0; i < bmp.Width; i++)
                 for (int j = 0; j < bmp.Height; j++)
                 {
                     bmp.SetPixel(i, j,
-                        Filter(original, filter, i, j, 3)
+                        Filter(original, filter, i, j, 4,0)
                     );
                 
                 }
@@ -234,7 +235,7 @@ namespace ImgProcessor
                 for (int j = 0; j < bmp.Height; j++)
                 {
                     bmp.SetPixel(i, j,
-                        Filter(original, filter, i, j, 3)
+                        Filter(original, filter, i, j, 3,0)
                     );
 
                 }
@@ -250,7 +251,7 @@ namespace ImgProcessor
                 for (int j = 0; j < bmp.Height; j++)
                 {
                     bmp.SetPixel(i, j,
-                        Filter(original, filter, i, j, 3)
+                        Filter(original, filter, i, j, 3,0)
                     );
 
                 }
@@ -266,7 +267,7 @@ namespace ImgProcessor
                 for (int j = 0; j < bmp.Height; j++)
                 {
                     bmp.SetPixel(i, j,
-                        Filter(original, filter, i, j, 3)
+                        Filter(original, filter, i, j, 3,50)
                     );
 
                 }
@@ -282,13 +283,13 @@ namespace ImgProcessor
                 for (int j = 0; j < bmp.Height; j++)
                 {
                     bmp.SetPixel(i, j,
-                        Filter(original, filter, i, j, 3)
+                        Filter(original, filter, i, j, 3,0)
                     );
 
                 }
             EditedImage.Image = bmp;
         }
-        private Color Filter(Bitmap bmp, int[] filter, int x, int y, int kernelsize)
+        private Color Filter(Bitmap bmp, int[] filter, int x, int y, int kernelsize, int kernel_offset)
         {
             int red = 0;
             int blue = 0;
@@ -327,13 +328,63 @@ namespace ImgProcessor
                 counter_y = -kernelsize / 2;
             }
 
-            red = red > 0 ? red : 0;
-            green = green > 0 ? green : 0;
-            blue = blue > 0 ? blue : 0;
+            red = red + kernel_offset > 0 ? red + kernel_offset : 0;
+            green = green + kernel_offset > 0 ? green + kernel_offset : 0;
+            blue = blue + kernel_offset > 0 ? blue + kernel_offset : 0;
             
-            return Color.FromArgb( red/divisor > 255 ? 255 : red/ divisor,
-                                   green / divisor > 255 ? 255 : green / divisor,
-                                   blue / divisor > 255 ? 255 : blue / divisor);
+            return Color.FromArgb( red/divisor + kernel_offset > 255 ? 255 : red/ divisor + kernel_offset,
+                                   green / divisor + kernel_offset > 255 ? 255 : green / divisor + kernel_offset,
+                                   blue / divisor + kernel_offset > 255 ? 255 : blue / divisor + kernel_offset);
+
+        }
+
+        private Color MFilter(Bitmap bmp,  int x, int y, int kernelsize)
+        {
+            int[] red_median = new int[9];
+            int[] blue_median = new int[9];
+            int[] green_median = new int[9];
+            int imgwidth = bmp.Width;
+            int imgheigth = bmp.Height;
+            int counter_x = -kernelsize / 2;
+            int counter_y = -kernelsize / 2;
+
+
+            for (int i = 0; i < kernelsize; ++i)
+            {
+                for (int j = 0; j < kernelsize; ++j)
+                {
+                    if (x + counter_x >= imgwidth || y + counter_y >= imgheigth ||
+                         x + counter_x < 0 || y + counter_y < 0)
+                    {
+                        //assuming out of bound pixels are original pixel
+                        Color pixel = bmp.GetPixel(x, y);
+                        red_median[i*kernelsize+j] = pixel.R ;
+                        blue_median[i * kernelsize + j] = pixel.B;
+                        green_median[i * kernelsize + j] = pixel.G ;
+                    }
+                    else
+                    {
+                        Color pixel = bmp.GetPixel(x + counter_x, y + counter_y);
+                        red_median[i * kernelsize + j] = pixel.R;
+                        blue_median[i * kernelsize + j] = pixel.B;
+                        green_median[i * kernelsize + j] = pixel.G;
+                    }
+
+                    counter_y++;
+                }
+                counter_x++;
+                counter_y = -kernelsize / 2;
+            }
+            Array.Sort(red_median);
+            Array.Sort(blue_median);
+            Array.Sort(green_median);
+            red_median[4] = red_median[4] > 0 ? red_median[4] : 0;
+            green_median[4] = green_median[4] > 0 ? green_median[4] : 0;
+            blue_median[4] = blue_median[4] > 0 ? blue_median[4] : 0;
+
+            return Color.FromArgb(red_median[4] > 255 ? 255 : red_median[4] ,
+                                   green_median[4]  > 255 ? 255 : green_median[4],
+                                    blue_median[4]  > 255 ? 255 : blue_median[4] );
 
         }
 
@@ -441,6 +492,22 @@ namespace ImgProcessor
 
             Plot.Image = plot_bmp;
 
+        }
+
+        private void MedianFilter(object sender, EventArgs e)
+        {
+            Bitmap bmp = new Bitmap(EditedImage.Image);
+            Bitmap original = new Bitmap(EditedImage.Image);
+            
+            for (int i = 0; i < bmp.Width; i++)
+                for (int j = 0; j < bmp.Height; j++)
+                {
+                    bmp.SetPixel(i, j,
+                        MFilter(original , i, j, 3)
+                    );
+
+                }
+            EditedImage.Image = bmp;
         }
     }
 
