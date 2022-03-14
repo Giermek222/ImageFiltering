@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,8 +22,7 @@ namespace ImgProcessor
         public List<Point> plot_points = new List<Point>() { new Point(0,0), new Point(255,255) };
         public Form1()
         {
-            for (int i = 0; i < 256; i++)
-                plot[i] = i;
+            
             InitializeComponent();
             
         }
@@ -31,7 +31,8 @@ namespace ImgProcessor
         {
             OpenFileDialog op = new OpenFileDialog();
 
-
+            for (int i = 0; i < 256; i++)
+                plot[i] = i;
             UpdatePlot();
             op.Title = "Select a picture";
             op.Filter = "All supported graphics|*.jpg;*.jpeg;*.png|" +
@@ -393,6 +394,27 @@ namespace ImgProcessor
                     plot_bmp.SetPixel(i, j, Color.FromArgb(pixel.A, red, green, blue));
                 }
             EditedImage.Image = plot_bmp;
+        }
+
+        private void SaveImage(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "Images|*.png;*.bmp;*.jpg";
+            ImageFormat format = ImageFormat.Png;
+            if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                string ext = System.IO.Path.GetExtension(sfd.FileName);
+                switch (ext)
+                {
+                    case ".jpg":
+                        format = ImageFormat.Jpeg;
+                        break;
+                    case ".bmp":
+                        format = ImageFormat.Bmp;
+                        break;
+                }
+                EditedImage.Image.Save(sfd.FileName, format);
+            }
         }
     }
 }
