@@ -20,10 +20,14 @@ namespace ImgProcessor
         public int[] plot = new int[256];
         Bitmap plot_bmp = new Bitmap(256, 256);
         public List<Point> plot_points = new List<Point>() { new Point(0,0), new Point(255,255) };
+
+        public BindingList<CustomFilter> saved_filters = new BindingList<CustomFilter>();
         public Form1()
         {
             
             InitializeComponent();
+            CustomFilters.DataSource = saved_filters;
+            
             
         }
 
@@ -416,5 +420,34 @@ namespace ImgProcessor
                 EditedImage.Image.Save(sfd.FileName, format);
             }
         }
+
+        private void CustomFilterSave(object sender, EventArgs e)
+        {
+            CustomFilter f = new CustomFilter();
+            f.name = "bogdan";
+            f.points = new List<Point>(plot_points);
+            f.array = plot.Clone() as int[];
+            saved_filters.Add(f);
+        }
+
+        private void ChangeFilter(object sender, EventArgs e)
+        {
+            CustomFilter selected = CustomFilters.SelectedItem as CustomFilter;
+            plot_points = new List<Point>(selected.points);
+            plot = selected.array.Clone() as int[];
+            AdjustAfterNewPoint();
+            UpdatePlot();
+            PictureAfterNewPoint();
+
+            Plot.Image = plot_bmp;
+
+        }
+    }
+
+    public class CustomFilter
+    {
+        public string name;
+        public List<Point> points = new List<Point>();
+        public int[] array = new int[256];
     }
 }

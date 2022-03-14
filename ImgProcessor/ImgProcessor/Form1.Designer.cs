@@ -45,6 +45,8 @@ namespace ImgProcessor
             this.button2 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.Plot = new System.Windows.Forms.PictureBox();
+            this.CustomFilters = new System.Windows.Forms.ListBox();
+            this.button9 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.OriginalImage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.EditedImage)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -201,11 +203,33 @@ namespace ImgProcessor
             this.Plot.TabStop = false;
             this.Plot.Click += new System.EventHandler(this.ClickPlot);
             // 
+            // CustomFilters
+            // 
+            this.CustomFilters.FormattingEnabled = true;
+            this.CustomFilters.ItemHeight = 15;
+            this.CustomFilters.Location = new System.Drawing.Point(974, 111);
+            this.CustomFilters.Name = "CustomFilters";
+            this.CustomFilters.Size = new System.Drawing.Size(120, 34);
+            this.CustomFilters.TabIndex = 14;
+            this.CustomFilters.SelectedIndexChanged += new System.EventHandler(this.ChangeFilter);
+            // 
+            // button9
+            // 
+            this.button9.Location = new System.Drawing.Point(759, 601);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(75, 23);
+            this.button9.TabIndex = 15;
+            this.button9.Text = "SaveFilter";
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.CustomFilterSave);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1106, 631);
+            this.Controls.Add(this.button9);
+            this.Controls.Add(this.CustomFilters);
             this.Controls.Add(this.Plot);
             this.Controls.Add(this.button8);
             this.Controls.Add(this.button2);
@@ -251,6 +275,8 @@ namespace ImgProcessor
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button8;
         private System.Windows.Forms.PictureBox Plot;
+        private System.Windows.Forms.ListBox CustomFilters;
+        private System.Windows.Forms.Button button9;
     }
 }
 
