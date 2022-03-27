@@ -521,13 +521,32 @@ namespace ImgProcessor
                     int treshold = rand.Next(0, 255);
                     Color pixel = bmp.GetPixel(i, j);
                     int red = pixel.R < treshold ? 0  : 255;
-                    int green = pixel.R < treshold ? 0 : 255;
-                    int blue  = pixel.R < treshold ? 0 : 255;
+                    int green = pixel.G < treshold ? 0 : 255;
+                    int blue  = pixel.B < treshold ? 0 : 255;
                     bmp.SetPixel(i, j, Color.FromArgb(pixel.A, red, green, blue));
                 }
 
             EditedImage.Image = bmp;
         }
+
+        private void GreyScale (object sender, MouseEventArgs e)
+        {
+            Bitmap bmp = new Bitmap(EditedImage.Image);
+            
+
+            for (int i = 0; i < bmp.Width; i++)
+                for (int j = 0; j < bmp.Height; j++)
+                {
+                    
+                    
+                    Color originalColor = bmp.GetPixel(i, j);
+                    int grayScale = (int)((originalColor.R * .3) + (originalColor.G * .59) + (originalColor.B * .11));
+                    bmp.SetPixel(i, j, Color.FromArgb(grayScale, grayScale, grayScale));
+                }
+
+            EditedImage.Image = bmp;
+        }
+
     }
 
     public class CustomFilter
