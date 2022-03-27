@@ -509,6 +509,25 @@ namespace ImgProcessor
                 }
             EditedImage.Image = bmp;
         }
+
+        private void Dithering(object sender, MouseEventArgs e)
+        {
+            Bitmap bmp = new Bitmap(EditedImage.Image);
+            Random rand = new Random();
+            
+            for (int i = 0; i < bmp.Width; i++)
+                for (int j = 0; j < bmp.Height; j++)
+                {
+                    int treshold = rand.Next(0, 255);
+                    Color pixel = bmp.GetPixel(i, j);
+                    int red = pixel.R < treshold ? 0  : 255;
+                    int green = pixel.R < treshold ? 0 : 255;
+                    int blue  = pixel.R < treshold ? 0 : 255;
+                    bmp.SetPixel(i, j, Color.FromArgb(pixel.A, red, green, blue));
+                }
+
+            EditedImage.Image = bmp;
+        }
     }
 
     public class CustomFilter
