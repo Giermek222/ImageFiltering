@@ -518,11 +518,27 @@ namespace ImgProcessor
             for (int i = 0; i < bmp.Width; i++)
                 for (int j = 0; j < bmp.Height; j++)
                 {
+                    int grey_step = Decimal.ToInt32(256 / numericRedDither.Value);
                     int treshold = rand.Next(0, 255);
                     Color pixel = bmp.GetPixel(i, j);
-                    int red = pixel.R < treshold ? 0  : 255;
-                    int green = pixel.G < treshold ? 0 : 255;
-                    int blue  = pixel.B < treshold ? 0 : 255;
+                    int grey_level;
+
+                    for (grey_level = 0; grey_level < pixel.R; grey_level += grey_step) { }
+                    grey_level = grey_level < 255 ? grey_level : 255;
+                    grey_step = (grey_level - grey_step) > 0 ? grey_level - grey_step : 0;
+                    int red = pixel.R < treshold ? grey_level - grey_step : grey_level ;
+
+                    grey_step = Decimal.ToInt32(256 / numericGreenDither.Value);
+                    for (grey_level = 0; grey_level < pixel.G; grey_level += grey_step) { }
+                    grey_level = grey_level < 255 ? grey_level : 255;
+                    grey_step = (grey_level - grey_step) > 0 ? grey_level - grey_step : 0;
+                    int green = pixel.G < treshold ? grey_level - grey_step : grey_level;
+
+                    grey_step = Decimal.ToInt32(256 / numericBlueDither.Value);
+                    for (grey_level = 0; grey_level < pixel.B; grey_level += grey_step) { }
+                    grey_level = grey_level < 255 ? grey_level : 255;
+                    grey_step = (grey_level - grey_step) > 0 ? grey_level - grey_step : 0;
+                    int blue  = pixel.B < treshold ? grey_level - grey_step : grey_level;
                     bmp.SetPixel(i, j, Color.FromArgb(pixel.A, red, green, blue));
                 }
 
@@ -546,7 +562,7 @@ namespace ImgProcessor
 
         private void MakeOctree(object sender, EventArgs e)
         {
-            Octree l = new Octree(Color.Black, Color.White, 0, Decimal.ToInt32(Depthlayers.Value));
+            Octree l = new Octree(Color.Black, Color.White, 0, Decimal.ToInt32(numericBlueDither.Value));
             Bitmap bmp = new Bitmap(EditedImage.Image);
 
             for (int i = 0; i < bmp.Width; i++)
