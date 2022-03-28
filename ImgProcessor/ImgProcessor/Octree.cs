@@ -75,7 +75,7 @@ namespace ImgProcessor
                         if (depth < max_depth)
                             return children[0].insert(color);
                         else
-                            return begin;
+                            return Color.FromArgb(255,mid_R,mid_G,mid_B);
                     }
                     else
                     {
@@ -88,7 +88,7 @@ namespace ImgProcessor
                         if (depth < max_depth)
                             return children[1].insert(color);
                         else
-                            return begin;
+                            return Color.FromArgb(255, mid_R, mid_G, mid_B);
                     }
                 }
                 else
@@ -104,7 +104,7 @@ namespace ImgProcessor
                         if (depth < max_depth)
                             return children[2].insert(color);
                         else
-                            return begin;
+                            return Color.FromArgb(255, mid_R, mid_G, mid_B);
                     }
                     else
                     {
@@ -117,7 +117,7 @@ namespace ImgProcessor
                         if (depth < max_depth)
                             return children[3].insert(color);
                         else
-                            return begin;
+                            return Color.FromArgb(255, mid_R, mid_G, mid_B);
                     }
                 }
             }
@@ -136,7 +136,7 @@ namespace ImgProcessor
                         if (depth < max_depth)
                             return children[4].insert(color);
                         else
-                            return begin;
+                            return Color.FromArgb(255, mid_R, mid_G, mid_B);
                     }
                     else
                     {
@@ -149,7 +149,7 @@ namespace ImgProcessor
                         if (depth < max_depth)
                             return children[5].insert(color);
                         else
-                            return begin;
+                            return Color.FromArgb(255, mid_R, mid_G, mid_B);
                     }
                 }
                 else
@@ -164,7 +164,7 @@ namespace ImgProcessor
                     if (depth < max_depth)
                         return children[6].insert(color);
                     else
-                        return begin;
+                        return Color.FromArgb(255, mid_R, mid_G, mid_B);
 
                 }
                     else
@@ -178,7 +178,7 @@ namespace ImgProcessor
                     if (depth < max_depth)
                         return children[7].insert(color);
                     else
-                        return begin;
+                        return Color.FromArgb(255, mid_R, mid_G, mid_B);
                 }
             }
             
