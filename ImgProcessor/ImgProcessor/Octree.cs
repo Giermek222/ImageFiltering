@@ -58,8 +58,8 @@ namespace ImgProcessor
 
         public Color insert(Color color)
         {
-            
 
+            color_count += 1;
             if (color.R < mid_R)
             {
                 if (color.G < mid_G)
@@ -71,7 +71,7 @@ namespace ImgProcessor
                                 begin,
                                 Color.FromArgb(255, mid_R, mid_G, mid_B),
                                 depth + 1, max_depth);
-                        children[0].color_count += 1;
+                        
                         if (depth < max_depth)
                             return children[0].insert(color);
                         else
@@ -84,7 +84,7 @@ namespace ImgProcessor
                             Color.FromArgb(255, begin.R, begin.G, mid_B),
                             Color.FromArgb(255, mid_R, mid_G, end.B),
                             depth + 1, max_depth);
-                        children[1].color_count += 1;
+                        
                         if (depth < max_depth)
                             return children[1].insert(color);
                         else
@@ -100,7 +100,7 @@ namespace ImgProcessor
                             Color.FromArgb(255, begin.R, mid_G, begin.B),
                             Color.FromArgb(255, mid_R, end.G, mid_B),
                             depth + 1, max_depth);
-                        children[2].color_count += 1;
+                        
                         if (depth < max_depth)
                             return children[2].insert(color);
                         else
@@ -113,7 +113,7 @@ namespace ImgProcessor
                             Color.FromArgb(255, begin.R, mid_G, mid_B),
                             Color.FromArgb(255, mid_R, end.G, end.B),
                             depth + 1, max_depth);
-                        children[3].color_count += 1;
+                        
                         if (depth < max_depth)
                             return children[3].insert(color);
                         else
@@ -132,7 +132,7 @@ namespace ImgProcessor
                             Color.FromArgb(255, mid_R, begin.G, begin.B),
                             Color.FromArgb(255, end.R, mid_G, mid_B),
                             depth + 1, max_depth);
-                        children[4].color_count += 1;
+                        
                         if (depth < max_depth)
                             return children[4].insert(color);
                         else
@@ -145,7 +145,7 @@ namespace ImgProcessor
                             Color.FromArgb(255, mid_R, begin.G, mid_B),
                             Color.FromArgb(255, end.R, mid_G, end.B),
                             depth + 1, max_depth);
-                        children[5].color_count += 1;
+                     
                         if (depth < max_depth)
                             return children[5].insert(color);
                         else
@@ -160,7 +160,7 @@ namespace ImgProcessor
                         Color.FromArgb(255, mid_R, mid_G, begin.B),
                         Color.FromArgb(255, end.R, end.G, mid_B),
                         depth + 1, max_depth);
-                    children[6].color_count += 1;
+                  
                     if (depth < max_depth)
                         return children[6].insert(color);
                     else
@@ -174,7 +174,7 @@ namespace ImgProcessor
                         Color.FromArgb(255, mid_R, mid_G, mid_B),
                         end,
                         depth + 1, max_depth);
-                    children[7].color_count += 1;
+         
                     if (depth < max_depth)
                         return children[7].insert(color);
                     else
