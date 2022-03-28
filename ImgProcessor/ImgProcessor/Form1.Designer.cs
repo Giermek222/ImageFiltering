@@ -50,10 +50,14 @@ namespace ImgProcessor
             this.button10 = new System.Windows.Forms.Button();
             this.button11 = new System.Windows.Forms.Button();
             this.button12 = new System.Windows.Forms.Button();
+            this.button13 = new System.Windows.Forms.Button();
+            this.splitter1 = new System.Windows.Forms.Splitter();
+            this.Depthlayers = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.OriginalImage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.EditedImage)).BeginInit();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Plot)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Depthlayers)).BeginInit();
             this.SuspendLayout();
             // 
             // OriginalImage
@@ -258,11 +262,44 @@ namespace ImgProcessor
             this.button12.UseVisualStyleBackColor = true;
             this.button12.MouseClick += new System.Windows.Forms.MouseEventHandler(this.GreyScale);
             // 
+            // button13
+            // 
+            this.button13.Location = new System.Drawing.Point(1246, 298);
+            this.button13.Name = "button13";
+            this.button13.Size = new System.Drawing.Size(75, 23);
+            this.button13.TabIndex = 19;
+            this.button13.Text = "Octree";
+            this.button13.UseVisualStyleBackColor = true;
+            this.button13.Click += new System.EventHandler(this.MakeOctree);
+            // 
+            // splitter1
+            // 
+            this.splitter1.Location = new System.Drawing.Point(0, 24);
+            this.splitter1.Name = "splitter1";
+            this.splitter1.Size = new System.Drawing.Size(3, 743);
+            this.splitter1.TabIndex = 20;
+            this.splitter1.TabStop = false;
+            // 
+            // Depthlayers
+            // 
+            this.Depthlayers.Location = new System.Drawing.Point(1232, 269);
+            this.Depthlayers.Maximum = new decimal(new int[] {
+            8,
+            0,
+            0,
+            0});
+            this.Depthlayers.Name = "Depthlayers";
+            this.Depthlayers.Size = new System.Drawing.Size(120, 23);
+            this.Depthlayers.TabIndex = 21;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1399, 767);
+            this.Controls.Add(this.Depthlayers);
+            this.Controls.Add(this.splitter1);
+            this.Controls.Add(this.button13);
             this.Controls.Add(this.button12);
             this.Controls.Add(this.button11);
             this.Controls.Add(this.button10);
@@ -290,6 +327,7 @@ namespace ImgProcessor
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Plot)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Depthlayers)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -318,6 +356,9 @@ namespace ImgProcessor
         private System.Windows.Forms.Button button10;
         private System.Windows.Forms.Button button11;
         private System.Windows.Forms.Button button12;
+        private System.Windows.Forms.Button button13;
+        private System.Windows.Forms.Splitter splitter1;
+        private System.Windows.Forms.NumericUpDown Depthlayers;
     }
 }
 

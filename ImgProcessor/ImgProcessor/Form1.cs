@@ -532,13 +532,10 @@ namespace ImgProcessor
         private void GreyScale (object sender, MouseEventArgs e)
         {
             Bitmap bmp = new Bitmap(EditedImage.Image);
-            
 
             for (int i = 0; i < bmp.Width; i++)
                 for (int j = 0; j < bmp.Height; j++)
                 {
-                    
-                    
                     Color originalColor = bmp.GetPixel(i, j);
                     int grayScale = (int)((originalColor.R * .3) + (originalColor.G * .59) + (originalColor.B * .11));
                     bmp.SetPixel(i, j, Color.FromArgb(grayScale, grayScale, grayScale));
@@ -547,6 +544,18 @@ namespace ImgProcessor
             EditedImage.Image = bmp;
         }
 
+        private void MakeOctree(object sender, EventArgs e)
+        {
+            Octree l = new Octree(Color.Black, Color.White, 0, Decimal.ToInt32(Depthlayers.Value));
+            Bitmap bmp = new Bitmap(EditedImage.Image);
+
+            for (int i = 0; i < bmp.Width; i++)
+                for (int j = 0; j < bmp.Height; j++)
+                {
+                    bmp.SetPixel(i,j,l.insert(bmp.GetPixel(i, j)));
+                }
+            EditedImage.Image = bmp;
+        }
     }
 
     public class CustomFilter
