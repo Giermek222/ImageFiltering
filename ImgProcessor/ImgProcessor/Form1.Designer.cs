@@ -58,6 +58,7 @@ namespace ImgProcessor
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.OctoColors = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.OriginalImage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.EditedImage)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -65,6 +66,7 @@ namespace ImgProcessor
             ((System.ComponentModel.ISupportInitialize)(this.numericBlueDither)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericGreenDither)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericRedDither)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.OctoColors)).BeginInit();
             this.SuspendLayout();
             // 
             // OriginalImage
@@ -400,11 +402,35 @@ namespace ImgProcessor
             this.label3.TabIndex = 26;
             this.label3.Text = "blue";
             // 
+            // OctoColors
+            // 
+            this.OctoColors.Location = new System.Drawing.Point(1450, 450);
+            this.OctoColors.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.OctoColors.Maximum = new decimal(new int[] {
+            256,
+            0,
+            0,
+            0});
+            this.OctoColors.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.OctoColors.Name = "OctoColors";
+            this.OctoColors.Size = new System.Drawing.Size(137, 27);
+            this.OctoColors.TabIndex = 27;
+            this.OctoColors.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1599, 1023);
+            this.Controls.Add(this.OctoColors);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -444,6 +470,7 @@ namespace ImgProcessor
             ((System.ComponentModel.ISupportInitialize)(this.numericBlueDither)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericGreenDither)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericRedDither)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.OctoColors)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -480,6 +507,7 @@ namespace ImgProcessor
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.NumericUpDown OctoColors;
     }
 }
 
